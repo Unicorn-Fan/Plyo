@@ -1,0 +1,69 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: plyo_postgres
+    environment:
+      POSTGRES_DB: plyo_db
+      POSTGRES_USER: plyo_user
+      POSTGRES_PASSWORD: plyo_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - plyo_network
+
+  # Backend API (NestJS)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: plyo_backend
+    environment:
+      NODE_ENV: development
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: plyo_db
+      DATABASE_USER: plyo_user
+      DATABASE_PASSWORD: plyo_password
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    networks:
+      - plyo_network
+    command: npm run start:dev
+
+  # Frontend (React)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: plyo_frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:3000
+      HOST: 0.0.0.0
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - plyo_network
+    command: npm start
+
+volumes:
+  postgres_data:
+
+networks:
+  plyo_network:
+    driver: bridge
