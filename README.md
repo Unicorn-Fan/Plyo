@@ -13,7 +13,7 @@ A full-stack lead capture system for Norwegian property buyers, built with React
 
 1. **Clone and Navigate**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Unicorn-Fan/Plyo.git
    cd plyo
    ```
 
@@ -150,19 +150,6 @@ PORT=3000
 REACT_APP_API_URL=http://localhost:3000
 ```
 
-## Testing
-
-```bash
-# Backend tests
-cd backend
-npm run test
-npm run test:e2e
-
-# Frontend tests
-cd frontend
-npm test
-```
-
 ## Development Commands
 
 ```bash
@@ -177,12 +164,10 @@ cd backend
 npm run start:dev                  # Start development server
 npm run migration:run              # Run database migrations
 npm run seed                       # Seed database
-npm run test                       # Run tests
 
 # Frontend commands
 cd frontend
 npm start                          # Start development server
-npm test                           # Run tests
 npm run build                      # Build for production
 ```
 
@@ -191,7 +176,3 @@ npm run build                      # Build for production
 - `leads` - Lead information and status
 - `broker_offices` - Broker office data with locations
 - `cities` - Norwegian cities with coordinates
-
-## License
-
-This project is part of Plyo's engineering challenge assessment.
